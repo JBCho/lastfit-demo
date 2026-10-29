@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>LastFit</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand"><span class="mark" aria-hidden="true"></span><span class="wordmark">LastFit</span><span class="tagline">3D 착화 시뮬레이터 <em>데모</em></span></div>
+    <p class="topbar-hint">내 발에 맞춰 신어보기</p>
+    <button class="btn-ghost" id="aboutBtn" type="button">사용 안내</button>
+  </header>
+  <nav class="phase-bar" aria-label="설정 단계">
+    <div class="phase-steps"><button id="phaseOne" aria-label="Phase 1 · 내 발 설정" aria-current="step" aria-pressed="true"><span>Phase 1</span><strong>내 발 설정</strong></button><button id="phaseTwo" aria-label="Phase 2 · 신발 신어보기" aria-pressed="false"><span>Phase 2</span><strong>신발 신어보기</strong></button></div>
+    <p id="phaseHint">발 방향과 치수를 내 발에 맞게 조절하세요.</p>
+    <button class="phase-action" id="phaseAction">착화감 확인하기 →</button>
+  </nav>
+  <main class="bench">
+    <aside class="pane pane-input" aria-label="발 치수 조정">
+      <header class="foot-panel-head"><h2>내 발</h2><p>슬라이더로 치수를 조절하세요.</p></header>
+      <div class="seg foot-side" id="footSideSeg" role="group" aria-label="발 방향"></div>
+      <div class="foot-control">
+        <div class="f-row"><label for="footLength">길이</label><output id="footLengthOut" for="footLength">262 mm</output></div>
+        <input id="footLength" type="range" min="215" max="300" step="1" value="262">
+        <div class="f-ticks"><span>215 mm</span><span>300 mm</span></div>
+      </div>
+      <div class="foot-control">
+        <div class="f-row"><label for="footBall">볼 너비</label><output id="footBallOut" for="footBall">94 mm</output></div>
+        <input id="footBall" type="range" min="80" max="120" step="0.5" value="94">
+        <div class="f-ticks"><span>좁게</span><span>넓게</span></div>
+      </div>
+      <div class="foot-control foot-control-shape">
+        <span class="foot-control-label" id="footShapeLabel">모양 타입</span>
+        <div id="footShapeSeg" class="foot-shapes" role="group" aria-labelledby="footShapeLabel"></div>
+      </div>
+      <div class="foot-control foot-control-instep">
+        <div class="f-row"><label for="footInstep">발등 높이</label><output id="footInstepOut" for="footInstep">54 mm</output></div>
+        <input id="footInstep" type="range" min="50" max="80" step="0.5" value="54">
+        <div class="f-ticks"><span>낮게</span><span>높게</span></div>
+      </div>
+      <p class="foot-panel-note" id="footPanelNote">오른발 · 발 모양 설정</p>
+    </aside>
+    <section class="stage" aria-label="3D 착화와 제품 선택">
+      <div class="viewport" id="viewport">
+        <div class="vp-top"><div class="seg seg-float seg-sm" id="camSeg" role="group" aria-label="카메라"></div></div>
+        <div class="vp-tools" role="group" aria-label="3D 표시">
+          <div class="seg seg-float seg-sm" id="modeSeg"></div>
+          <div class="product-tools"><button class="tog" id="shoeTog" type="button" aria-pressed="true">신발 표시</button><button class="tog" id="secTog" type="button" aria-pressed="false">단면 보기</button></div>
+        </div>
+        <div class="view-caption" id="viewCaption" aria-live="polite"></div>
+        <div class="section-card" id="sectionCard" hidden>
+          <div class="sc-head"><b id="secTitle">단면</b><span id="secSub"></span><button id="secClose" type="button" aria-label="단면 닫기">닫기</button></div>
+          <canvas id="secCanvas" aria-label="발과 신발 내부 단면 비교"></canvas>
+          <input type="range" id="secRange" min="0.05" max="0.97" step="0.005" value="0.7" aria-label="단면 위치">
+          <div class="f-ticks"><span>뒤꿈치</span><span>발등</span><span>볼</span><span>발끝</span></div>
+        </div>
+        <div class="vp-bottom" hidden>
+          <label class="mini"><span>착화 기간</span><input type="range" id="daysRange" min="0" max="30" step="1" value="0"><output id="daysOut">새 신발</output></label>
+          <label class="mini"><span>끈 조임</span><input type="range" id="laceRange" min="0" max="1" step="0.05" value="0.85"><output id="laceOut">단단히</output></label>
+        </div>
+      </div>
+      <div class="product-size-bar" id="productControls" hidden>
+        <label for="productSize">제품 사이즈</label>
+        <select id="productSize" disabled><option value="270">270 mm</option></select>
+        <div class="size-recommendation" id="sizeRecommendation" aria-live="polite" aria-atomic="true">
+          <div class="recommendation-copy">
+            <span class="recommendation-label">추천 사이즈</span>
+            <strong id="recommendedSize">계산 중…</strong>
+            <span id="recommendationReason" hidden></span>
+          </div>
+          <button class="recommendation-apply" id="applyRecommendedSize" type="button" aria-label="추천 사이즈 적용" disabled>적용</button>
+        </div>
+      </div>
+      <div class="rack" id="rack" role="list" aria-label="GLB 파일과 모델 목록"></div>
+      <p class="model-status" id="assetStatus" role="status" aria-live="polite">제품 모델을 불러오는 중입니다…</p>
+      <div class="camera-tools" role="group" aria-label="회전 및 시점 초기화"><button class="tog" id="rotateTog" type="button" aria-pressed="false">자동 회전</button><button class="tog" id="viewReset" type="button">시점 초기화</button></div>
+    </section>
+  </main>
+</div>
+<div class="overlay" id="about" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="aboutTitle">
+    <button class="close" id="aboutClose" type="button">닫기</button>
+    <h2 id="aboutTitle">내 발에 맞춰 보기</h2>
+    <p>Phase 1에서 왼발·오른발과 내 발의 길이, 볼 너비, 모양 타입, 발등 높이를 설정하세요. Phase 2로 넘어가면 Air Jordan부터 신발을 신어볼 수 있습니다. Phase 2에서도 발 형상을 계속 수정할 수 있습니다.</p>
+    <p>하단에서 제품의 표기 사이즈를 5mm 단위로 선택하세요. 260 표기는 신발 바깥 길이 260mm와 다릅니다. Jordan은 Nike 공식 표의 발 길이를 기준으로 보정하며, 공개되지 않은 내부 치수와 외형 크기는 추정값입니다.</p>
+    <p>모든 제품은 표기 270으로 시작합니다. 사이즈를 바꾸면 신발 크기와 착화 계산이 함께 바뀝니다. 제품 보기에서는 미착화 외형을 확인할 수 있습니다.</p>
+    <p>갑피는 발에 눌리는 부분만 소재가 늘어날 수 있는 범위에서 바깥으로 변형하고 밑창은 고정합니다. 여유 공간이 있어도 신발을 안쪽으로 줄이지 않습니다. 추정 형상에 간섭이 남으면 발을 반투명으로 표시해 비교합니다.</p>
+    <p>갑피 압력은 소재의 장력·곡률과 발 연조직의 압축을 함께 계산한 추정입니다. 변형 한계를 넘는 부분은 회색으로 표시하며 압력 수치에서 제외합니다. 체중에 따른 발바닥 압력은 계산하지 않습니다.</p>
+    <p>Air Jordan 1 Dior는 가죽 패널과 봉제·밑창 경계를 추정해 변형을 주변으로 분산하고, 겉감·안감·장식을 함께 움직입니다. 계수와 패널 경계는 제품 실측값이 아닙니다.</p>
+    <p class="disclaimer">내부 형상과 물성은 추정값입니다. 제품 실측으로 검증된 압력은 아닙니다.</p>
+    <p>Air Jordan High 모델: <a href="https://sketchfab.com/3d-models/nike-air-jordan-fd462c530d974f33a523d88a7562f1cf" target="_blank" rel="noopener">Ar41k · Nike Air Jordan</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. 원본 모델을 보존하고 표시 크기·착화 변형을 실행 중 적용합니다.</p>
+  </div>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="js/vendor/GLTFLoader.js"></script>
+<script src="js/util.js"></script>
+<script src="js/data.js"></script>
+<script src="js/geometry.js"></script>
+<script src="js/pressure-model.js"></script>
+<script src="js/support-bed.js"></script>
+<script src="js/contact-drape.js"></script>
+<script src="js/dior-fit.js"></script>
+<script src="js/plantar-contact.js"></script>
+<script src="js/sim.js"></script>
+<script src="js/engine.js"></script>
+<script src="js/viewer.js"></script>
+<script src="js/section.js"></script>
+<script src="js/product-assets.js"></script>
+<script src="js/asset-catalog.js"></script>
+<script src="js/glb-library.js"></script>
+<script src="js/glb-fit.js"></script>
+<script src="js/product-sizing.js"></script>
+<script src="js/dior-cavity.js"></script>
+<script src="js/dior-lining.js"></script>
+<script src="js/size-recommendation.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
