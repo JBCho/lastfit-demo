@@ -103,6 +103,9 @@
     const sim=LF.sim.simulate(measured,worn.shoe,shoe.mats,ctx);
     const usable=model.glbCalibration.usableGeometry,tipGaps=[];let front=-Infinity;
     const regionStats={};for(const key of REGIONS)regionStats[key]={evaluated:0,missing:0,maxPressureKPa:0,maxUnresolvedMm:0,invalid:0};
+    const landmarks={instepDorsal:{label:'발등 위쪽',count:0,invalid:0,maxPressureKPa:0,maxUnresolvedMm:0},
+      midfootMedial:{label:'중족부 안쪽 측벽',count:0,invalid:0,maxPressureKPa:0,maxUnresolvedMm:0},
+      midfootLateral:{label:'중족부 바깥쪽 측벽',count:0,invalid:0,maxPressureKPa:0,maxUnresolvedMm:0}};
     for(let i=0;i<measured.n;i++) {
       if(measured.tv[i]>.85)front=Math.max(front,sim.fpos[i*3]);
       if(finite(sim.lgap[i]))tipGaps.push({gap:sim.lgap[i],x:sim.fpos[i*3]});
@@ -119,6 +122,12 @@
       a.evaluated++;a.maxPressureKPa=Math.max(a.maxPressureKPa,sim.P[i]);
       if(!sim.pressureValid[i])a.invalid++;
       a.maxUnresolvedMm=Math.max(a.maxUnresolvedMm,sim.unresolvedInterference[i]);
+      if(key==='instep'){
+        const part=measured.nrm[i*3+1]>.5?landmarks.instepDorsal:measured.nrm[i*3+2]>=0?landmarks.midfootMedial:landmarks.midfootLateral;
+        part.count++;if(!sim.pressureValid[i])part.invalid++;
+        part.maxPressureKPa=Math.max(part.maxPressureKPa,sim.P[i]);
+        part.maxUnresolvedMm=Math.max(part.maxUnresolvedMm,sim.unresolvedInterference[i]);
+      }
     }
     const usableGapMm=usable&&finite(usable.frontXmm)&&finite(front)?usable.frontXmm-front:NaN;
     // Toe-room convention refers to the longest toe. Requiring 5mm along
@@ -129,7 +138,7 @@
     const tip=sim.lgap[measured.E0];
     const leadingTipGaps=finite(tip)?[tip]:tipGaps.filter(p=>p.x>=front-.5).map(p=>p.gap);
     const tipGapMm=smallestMean(leadingTipGaps),length={tipGapMm,usableGapMm,minMm:LIMITS.minToeGapMm,maxMm:LIMITS.maxToeGapMm};
-    const metrics={length,zones:{},coverage:{},rankingCost:Infinity};
+    const metrics={length,zones:{},coverage:{},landmarks,rankingCost:Infinity};
     if(!finite(usableGapMm)||!finite(tipGapMm))return failure(size,'unknown','앞코 내부 여유를 확인하기 어렵습니다.',metrics,quality);
     if(usableGapMm<LIMITS.minToeGapMm||tipGapMm<LIMITS.minToeGapMm)
       return failure(size,'tight','발끝 길이 여유가 부족합니다.',metrics,quality);
@@ -148,7 +157,10 @@
         maxPressureKPa:a.maxPressureKPa,maxUnresolvedMm:a.maxUnresolvedMm,invalidCount:a.invalid,tightLimitKPa:tightLimit,looseLimitMm:finite(tol.loose[key])?tol.loose[key]:null};
       if((key==='toeFront'||key==='toeBox'||key==='ball'||key==='instep')&&missing>LIMITS.maximumMissingForefootFraction)unknown.push(LABELS[key]);
       if(!m.pressureComplete||a.invalid||a.maxUnresolvedMm>LIMITS.maximumUnresolvedMm||m.peakP>tightLimit||a.maxPressureKPa>tol.Ppain)
-        tight.push(LABELS[key]);
+        {
+          const parts=key==='instep'?Object.values(landmarks).filter(p=>p.count&&(p.invalid||p.maxUnresolvedMm>LIMITS.maximumUnresolvedMm||p.maxPressureKPa>tol.Ppain)):[];
+          tight.push(...(parts.length?parts.map(p=>p.label):[LABELS[key]]));
+        }
       if(key!=='toeFront'&&m.medGap>tol.loose[key])loose.push(LABELS[key]);
       // No average score can compensate for a failed local fit condition.
       // Among passing candidates prefer useful toe room and close, mild contact.
@@ -189,6 +201,12 @@
       progress=typeof options.onProgress==='function'?options.onProgress:()=>{},key=footprintKey(options),candidates=[];
     const finish=(status,size,reason)=>({status,size,reason,candidates,key,requiresVerification:status==='ready',
       source:'estimated-profile-screening-with-upper-contact-check',range:[230,300],step:5});
+    const withReference=result=>{
+      if(!LF.fitEvidence||!['none','unknown'].includes(result.status))return result;
+      const reference=LF.fitEvidence.reference({...options,simulationResult:result});
+      return reference&&reference.status==='reference'?{...result,...reference,candidates,
+        simulationStatus:result.status,simulationReason:result.reason,requiresVerification:false}:result;
+    };
     if(!options.registration||!options.catalog||!options.model||!options.foot)
       return finish('unknown',null,'발과 제품 정보를 확인해 주세요.');
     const pref=safePref(options.pref||{}),sock=LF.data.SOCKS[pref.sock];
@@ -224,13 +242,18 @@
       candidates[candidates.findIndex(c=>c.size===full.size)]=full;if(full.acceptable)verified.push(full);
     }
     if(!current())return finish('cancelled',null,'');
-    verified.sort((a,b)=>a.metrics.rankingCost-b.metrics.rankingCost||a.size-b.size);
-    if(verified.length)return finish('ready',verified[0].size,'길이·볼·발등을 함께 확인한 추정 치수입니다.');
+    const hasEvidence=Boolean(LF.fitEvidence&&options.catalog.fit&&options.catalog.fit.evidence);
+    const chartMinimum=hasEvidence?LF.fitEvidence.minimumChartSize(options.catalog,options.foot.length):null;
+    for(const candidate of candidates)candidate.chartEligible=!hasEvidence||chartMinimum!=null&&candidate.size>=chartMinimum;
+    const eligible=verified.filter(c=>c.chartEligible!==false).sort((a,b)=>a.metrics.rankingCost-b.metrics.rankingCost||a.size-b.size);
+    if(eligible.length)return {...finish('ready',eligible[0].size,'길이·볼·발등을 함께 확인한 추정 치수입니다.'),
+      confidence:'estimated',geometryFitVerified:true,fitVerified:false,pressureValidated:false,manufacturerMinimumSize:chartMinimum};
+    if(verified.length&&hasEvidence)return withReference(finish('unknown',null,'형상 후보가 제조사 발 길이 기준보다 작아 적합성을 다시 확인해야 합니다.'));
     const plausible=candidates.filter(c=>c.metrics.length&&c.metrics.length.usableGapMm>=LIMITS.minToeGapMm&&c.metrics.length.usableGapMm<=LIMITS.maxToeGapMm),
       unknown=plausible.find(c=>c.status==='unknown')||candidates.find(c=>c.status==='unknown');
-    if(unknown)return finish('unknown',null,unknown.reason);
+    if(unknown)return withReference(finish('unknown',null,unknown.reason));
     const result=finish('none',null,'');
-    result.reasonDetails=[...new Set(plausible.map(c=>c.reason))];return result;
+    result.reasonDetails=[...new Set(plausible.map(c=>c.reason))];return withReference(result);
   }
   LF.sizeRecommendation={sizes:SIZES,limits:LIMITS,recommend,inspect,candidateModel,key:footprintKey};
 })((window.LF=window.LF||{}));

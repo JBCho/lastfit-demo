@@ -73,14 +73,18 @@
 
   function paintRecommendation(result) {
     recommendationResult = result;
-    const ready = result && result.status === 'ready' && Number.isFinite(result.size);
+    const reference = result && result.status === 'reference';
+    const ready = result && (result.status === 'ready' || reference) && Number.isFinite(result.size);
+    $('recommendationLabel').textContent = reference ? '참고 사이즈' : '추천 사이즈';
+    $('sizeRecommendation').setAttribute('title',reference?'제품 실측 부족 · 착화 적합 미확인 · 제조사·관련 모델 기반 참고값':'계산용 내부 형상 기반 추정이며 실물 적합 보증이 아닙니다.');
     $('recommendedSize').textContent = ready ? `${result.size} mm` : result && result.status === 'none' ? '추천 없음'
       : result && result.status === 'unknown' ? '추천 보류' : '계산 중…';
     $('recommendationReason').textContent = result && result.status !== 'none' && result.reason || '';
     $('sizeRecommendation').setAttribute('aria-busy', String(!result || result.status === 'pending'));
     const applied = ready && state.size === result.size;
     $('applyRecommendedSize').disabled = !ready || applied;
-    $('applyRecommendedSize').textContent = applied ? '적용됨' : '적용';
+    $('applyRecommendedSize').setAttribute('aria-label',reference?'참고 사이즈로 신어보기':'추천 사이즈 적용');
+    $('applyRecommendedSize').textContent = applied ? '적용됨' : reference ? '신어보기' : '적용';
   }
 
   function requestRecommendation(entry) {
@@ -110,7 +114,7 @@
           } });
         if (!current() || result.status === 'cancelled') return;
         if (result.status === 'ready') {
-          const fitting = result.candidates.filter(candidate => candidate.acceptable)
+          const fitting = result.candidates.filter(candidate => candidate.acceptable && candidate.chartEligible !== false)
             .sort((a, b) => a.metrics.rankingCost - b.metrics.rankingCost || a.size - b.size);
           const verified = [];
           result.actualChecks = [];
@@ -126,12 +130,18 @@
           verified.sort((a, b) => a.checked.metrics.rankingCost - b.checked.metrics.rankingCost || a.checked.size - b.checked.size);
           if (!verified.length) {
             result.status = 'unknown'; result.size = null;
+            result.geometryFitVerified = false;
             result.reason = '내부 형상을 다시 확인한 결과 맞는 치수가 없어 추천을 보류합니다.';
+            if(LF.fitEvidence){
+              const reference=LF.fitEvidence.reference({catalog:entry.catalog,foot,pref,simulationResult:result});
+              if(reference&&reference.status==='reference')Object.assign(result,reference,{requiresVerification:false});
+            }
           } else {
             const best = verified[0], cacheKey = `${side}:${best.checked.size}`;
             entry.sizeRegistrations.delete(cacheKey); entry.sizeRegistrations.set(cacheKey, best.registration);
             if (entry.sizeRegistrations.size > 4) entry.sizeRegistrations.delete(entry.sizeRegistrations.keys().next().value);
             result.size = best.checked.size; result.verification = best.checked; result.requiresVerification = false;
+            result.geometryFitVerified = true;
             result.reason = '길이·볼·발등을 함께 맞춘 형상 기반 추정';
           }
         }
@@ -247,7 +257,7 @@
     });
     $('applyRecommendedSize').addEventListener('click', () => {
       const entry = selectedGLB(), result = recommendationResult;
-      if (!entry || !result || result.status !== 'ready' || result.requiresVerification !== false || recommendationKey !== recommendationInputKey(entry)) return;
+      if (!entry || !result || !['ready','reference'].includes(result.status) || result.requiresVerification !== false || recommendationKey !== recommendationInputKey(entry)) return;
       registerGLBFit(entry, result.size); state.size = result.size;
       recompute({ model: true });
     });

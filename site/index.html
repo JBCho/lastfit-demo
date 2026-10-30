@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+KR:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="css/app.css">
+<link rel="stylesheet" href="css/app.css?v=f6cb0705b695">
 </head>
 <body>
 <div class="app">
@@ -70,7 +70,7 @@
         <select id="productSize" disabled><option value="270">270 mm</option></select>
         <div class="size-recommendation" id="sizeRecommendation" aria-live="polite" aria-atomic="true">
           <div class="recommendation-copy">
-            <span class="recommendation-label">추천 사이즈</span>
+            <span class="recommendation-label" id="recommendationLabel">추천 사이즈</span>
             <strong id="recommendedSize">계산 중…</strong>
             <span id="recommendationReason" hidden></span>
           </div>
@@ -94,31 +94,34 @@
     <p>갑피 압력은 소재의 장력·곡률과 발 연조직의 압축을 함께 계산한 추정입니다. 변형 한계를 넘는 부분은 회색으로 표시하며 압력 수치에서 제외합니다. 체중에 따른 발바닥 압력은 계산하지 않습니다.</p>
     <p>Air Jordan 1 Dior는 가죽 패널과 봉제·밑창 경계를 추정해 변형을 주변으로 분산하고, 겉감·안감·장식을 함께 움직입니다. 계수와 패널 경계는 제품 실측값이 아닙니다.</p>
     <p class="disclaimer">내부 형상과 물성은 추정값입니다. 제품 실측으로 검증된 압력은 아닙니다.</p>
+    <p>‘추천 사이즈’는 계산용 내부 형상 검사를 통과한 추정값입니다. ‘참고 사이즈’는 형상 검사를 통과하지 못했거나 제품 실측이 부족할 때 제조사 발 길이표와 관련 모델 자료로 제시하는 낮은 신뢰도의 시작점입니다. 발볼·발등의 적합이나 압력 안전성을 확인한 값이 아닙니다.</p>
+    <p>정확한 Dior·High의 내부 실측 치수는 확보되지 않았습니다. <a href="https://runrepeat.com/air-jordan-1-low" target="_blank" rel="noopener">일반 Jordan Low</a>·<a href="https://runrepeat.com/air-jordan-1-mid" target="_blank" rel="noopener">Mid의 실험실 측정</a>은 관련 모델 참고값이며, 이 두 제품의 실측으로 대체하지 않습니다. <a href="https://kjhe.or.kr/_PR/view/?aidx=40564&amp;bidx=3659" target="_blank" rel="noopener">한국 성인 발 통계</a>와 <a href="https://www.nature.com/articles/s41598-019-55432-z" target="_blank" rel="noopener">120만 발 스캔 연구</a>는 치수별 개인차·추정 오차를 다루는 근거로만 사용하며 입력값이나 성별을 자동으로 바꾸지 않습니다.</p>
     <p>Air Jordan High 모델: <a href="https://sketchfab.com/3d-models/nike-air-jordan-fd462c530d974f33a523d88a7562f1cf" target="_blank" rel="noopener">Ar41k · Nike Air Jordan</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a>. 원본 모델을 보존하고 표시 크기·착화 변형을 실행 중 적용합니다.</p>
   </div>
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script src="js/vendor/GLTFLoader.js"></script>
-<script src="js/util.js"></script>
-<script src="js/data.js"></script>
-<script src="js/geometry.js"></script>
-<script src="js/pressure-model.js"></script>
-<script src="js/support-bed.js"></script>
-<script src="js/contact-drape.js"></script>
-<script src="js/dior-fit.js"></script>
-<script src="js/plantar-contact.js"></script>
-<script src="js/sim.js"></script>
-<script src="js/engine.js"></script>
-<script src="js/viewer.js"></script>
-<script src="js/section.js"></script>
-<script src="js/product-assets.js"></script>
-<script src="js/asset-catalog.js"></script>
-<script src="js/glb-library.js"></script>
-<script src="js/glb-fit.js"></script>
-<script src="js/product-sizing.js"></script>
-<script src="js/dior-cavity.js"></script>
-<script src="js/dior-lining.js"></script>
-<script src="js/size-recommendation.js"></script>
-<script src="js/app.js"></script>
+<script src="js/vendor/GLTFLoader.js?v=5c15967ba830"></script>
+<script src="js/util.js?v=15f1d7794247"></script>
+<script src="js/data.js?v=60da36389346"></script>
+<script src="js/geometry.js?v=1534333a8cbb"></script>
+<script src="js/pressure-model.js?v=dcbd7cc4715b"></script>
+<script src="js/support-bed.js?v=7dc47badd992"></script>
+<script src="js/contact-drape.js?v=6387e75f890c"></script>
+<script src="js/dior-fit.js?v=764c0db5ceb1"></script>
+<script src="js/plantar-contact.js?v=3dc154f2ed3f"></script>
+<script src="js/sim.js?v=a253112b68dc"></script>
+<script src="js/engine.js?v=735899b53779"></script>
+<script src="js/viewer.js?v=9779c769bf1a"></script>
+<script src="js/section.js?v=5945e0bad0a3"></script>
+<script src="js/product-assets.js?v=5d4b8495e121"></script>
+<script src="js/asset-catalog.js?v=3205bd7e743f"></script>
+<script src="js/glb-library.js?v=aeb0aa27183e"></script>
+<script src="js/glb-fit.js?v=26f7d0a6007a"></script>
+<script src="js/product-sizing.js?v=09964445090d"></script>
+<script src="js/dior-cavity.js?v=d4d2830a382e"></script>
+<script src="js/dior-lining.js?v=9a8564cdb31c"></script>
+<script src="js/fit-evidence.js?v=ef651452dbe5"></script>
+<script src="js/size-recommendation.js?v=6019b40e9fcf"></script>
+<script src="js/app.js?v=c4e44416431d"></script>
 </body>
 </html>

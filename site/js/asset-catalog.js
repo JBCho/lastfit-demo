@@ -388,9 +388,458 @@ window.LF.assetCatalog = [
       },
       "upper": "leather",
       "physicsProfile": "dior-leather-v1",
+      "evidenceProfile": "jordan-family-research-v1",
       "counter": "counter_medium",
       "toeAllowanceMm": 12,
-      "materialSourceUrl": "https://www.dior.com/couture/var/dior/storage/original/application/eebf40d9db7bd39bb8a2d61670783fbc.pdf"
+      "materialSourceUrl": "https://www.dior.com/couture/var/dior/storage/original/application/eebf40d9db7bd39bb8a2d61670783fbc.pdf",
+      "evidence": {
+        "selectedProduct": {
+          "displayName": "Air Jordan 1 Dior",
+          "expectedProduct": "Air Jordan 1 Low OG Dior (2020)",
+          "expectedStyleCode": "CN8608-002",
+          "exactProductIdentityVerified": false,
+          "meshSizeVerified": false,
+          "meshMetadata": {
+            "copyright": "VTX",
+            "generator": "Khronos glTF Blender I/O v5.0.21"
+          },
+          "identityNote": "The visual demo is named Dior Low. The GLB metadata does not authenticate a retail SKU or state a measured nominal size.",
+          "exactInteriorMeasurements": {
+            "isMeasured": false,
+            "innerLengthMm": null,
+            "insoleLengthMm": null,
+            "ballWidthMm": null,
+            "heelWidthMm": null,
+            "instepHeightMm": null,
+            "toeBoxWidthMm": null,
+            "toeBoxHeightMm": null,
+            "status": "matching-SKU-and-size-interior-measurements-not-found"
+          },
+          "manufacturerChartSourceIds": [
+            "nike-kr-men",
+            "nike-br-men"
+          ],
+          "relatedModelMeasurementIds": [
+            "runrepeat-aj1-low-us9",
+            "runrepeat-aj1-mid-us9"
+          ],
+          "exteriorCrossCheckIds": [
+            "dior-low-cn8608-us9-seller-outsole"
+          ],
+          "materialSourceIds": [
+            "dior-air-dior-production"
+          ]
+        },
+        "relatedMeasurements": [
+          {
+            "id": "runrepeat-aj1-low-us9",
+            "productName": "Air Jordan 1 Low (regular model, not Dior)",
+            "styleCode": null,
+            "measurementScope": "related-model-laboratory-sample",
+            "exactMatchToSelectedProducts": false,
+            "size": {
+              "system": "US-men",
+              "label": 9,
+              "equivalentKrLabelMm": 270,
+              "equivalenceSourceId": "nike-kr-men"
+            },
+            "measurements": {
+              "innerLengthMm": 272.0,
+              "insoleLengthMm": null,
+              "ballWidthMm": 94.9,
+              "toeBoxWidthMm": 68.5,
+              "toeBoxHeightMm": 29.8,
+              "instepHeightMm": null,
+              "heelWidthMm": null
+            },
+            "sourceIds": [
+              "runrepeat-aj1-low",
+              "runrepeat-methodology"
+            ],
+            "methodId": "runrepeat-gel-interior-v1.8",
+            "referenceSizeBasis": "Review states men's US9 for the tested shoe; laboratory purchase protocol also uses men's US9.",
+            "nominalPopulationSampleCount": null,
+            "measuredUncertaintyMm": null,
+            "limitation": "One reviewed product/model size is not a size-run or selected-product interior scan. Do not apply these values to Dior or High as exact measurements."
+          },
+          {
+            "id": "runrepeat-aj1-mid-us9",
+            "productName": "Air Jordan 1 Mid (not High)",
+            "styleCode": null,
+            "measurementScope": "related-model-laboratory-sample",
+            "exactMatchToSelectedProducts": false,
+            "size": {
+              "system": "US-men",
+              "label": 9,
+              "equivalentKrLabelMm": 270,
+              "equivalenceSourceId": "nike-kr-men"
+            },
+            "measurements": {
+              "innerLengthMm": 271.2,
+              "insoleLengthMm": null,
+              "ballWidthMm": 94.9,
+              "toeBoxWidthMm": 70.4,
+              "toeBoxHeightMm": 25.7,
+              "instepHeightMm": null,
+              "heelWidthMm": null
+            },
+            "sourceIds": [
+              "runrepeat-aj1-mid",
+              "runrepeat-methodology"
+            ],
+            "methodId": "runrepeat-gel-interior-v1.8",
+            "referenceSizeBasis": "Laboratory standard purchasing protocol uses men's US9; exact retail SKU not established from the reported dimension table.",
+            "nominalPopulationSampleCount": null,
+            "measuredUncertaintyMm": null,
+            "limitation": "Mid is not the selected High. Family-reference data only; no selected-product instep height is available."
+          }
+        ],
+        "sources": [
+          {
+            "id": "nike-kr-men",
+            "url": "https://www.nike.com/kr/size-fit/mens-footwear",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-foot-size-chart",
+            "scope": "General men's footwear chart, measurement instructions, label/foot-length distinction; no selected-product interior L/W/H."
+          },
+          {
+            "id": "nike-br-men",
+            "url": "https://static.nike.com.br/web/prd/tabela-de-medidas.html",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-foot-size-chart",
+            "scope": "Independent regional Nike chart corroborating men's US-to-foot-length values; not the Brazilian label mapping for Korean product labels."
+          },
+          {
+            "id": "runrepeat-aj1-low",
+            "url": "https://runrepeat.com/air-jordan-1-low",
+            "retrievedAt": "2026-10-30",
+            "type": "independent-laboratory-original-measurements",
+            "scope": "Regular AJ1 Low, unrelated retail SKU to Dior; current review dimension values."
+          },
+          {
+            "id": "runrepeat-aj1-mid",
+            "url": "https://runrepeat.com/air-jordan-1-mid",
+            "retrievedAt": "2026-10-30",
+            "type": "independent-laboratory-original-measurements",
+            "scope": "AJ1 Mid, not the selected High; current review dimension values."
+          },
+          {
+            "id": "runrepeat-methodology",
+            "url": "https://runrepeat.com/testing-methodology",
+            "retrievedAt": "2026-10-30",
+            "type": "measurement-method-original-source",
+            "scope": "Men's US9 procurement, gel-mold interior method and the 28.3mm toe-measurement station."
+          },
+          {
+            "id": "rakuten-dior-low-us9",
+            "url": "https://item.rakuten.co.jp/kaitorikomachi/di0527004-y05/",
+            "retrievedAt": "2026-10-30",
+            "type": "seller-approximate-exterior-measurements",
+            "scope": "Specific CN8608-002 used pair; JP27/US9/EU42.5; outsole and overall height only.",
+            "accessNote": "Search excerpt accessible; direct page fetch returned a character-decoding error."
+          },
+          {
+            "id": "dior-air-dior-production",
+            "url": "https://www.dior.com/couture/var/dior/storage/original/application/eebf40d9db7bd39bb8a2d61670783fbc.pdf",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-production-description",
+            "scope": "Italian leather and retained AJ1 design language. No thickness, elastic constants, interior measurements or test-proven stretch budgets."
+          }
+        ],
+        "anthropometry": {
+          "version": 1,
+          "verifiedAt": "2026-10-30",
+          "title": "발 치수 인체계측 연구 근거",
+          "purpose": "측정 정의, 미입력 형상의 추정 오차 및 비례 보정 방식의 참고 자료",
+          "isProductMeasurement": false,
+          "mayOverrideUserMeasurements": false,
+          "maySelectUserSexFromMeasurements": false,
+          "providesValidatedPressureThresholds": false,
+          "studies": [
+            {
+              "id": "kwon-2024-sizekorea8",
+              "title": "한국인 발의 크기 및 형태 분류 분석 -8차 사이즈코리아 20∼69세 데이터를 중심으로-",
+              "authors": [
+                "권은순",
+                "이하경",
+                "이예진"
+              ],
+              "year": 2024,
+              "doi": "10.5934/kjhe.2024.33.2.251",
+              "sourceUrl": "https://kjhe.or.kr/_PR/view/?aidx=40564\u0026bidx=3659",
+              "sourceType": "peer-reviewed-primary-study",
+              "sourceTable": "Table 4",
+              "dataset": "8th Size Korea, cited in the paper as Size Korea 2021",
+              "country": "Korea",
+              "ageRangeYears": [
+                20,
+                69
+              ],
+              "sampleSizePeople": 4503,
+              "samplesBySex": {
+                "male": 2000,
+                "female": 2503
+              },
+              "measurementMethod": "3D foot scan",
+              "weightBearingProtocol": "원조사 측정 매뉴얼에서 독립 확인하지 않았음",
+              "statisticsType": "성별 전체 표본의 평균 및 표준편차; 발 길이 조건부 통계가 아님",
+              "unit": "mm",
+              "statistics": {
+                "footStraightLength": {
+                  "sourceLabel": "발직선길이",
+                  "male": {
+                    "mean": 256.41,
+                    "sd": 10.86
+                  },
+                  "female": {
+                    "mean": 234.18,
+                    "sd": 9.7
+                  }
+                },
+                "footWidth": {
+                  "sourceLabel": "발너비",
+                  "sourceMeasurementCode": "W2",
+                  "male": {
+                    "mean": 99.35,
+                    "sd": 5.15
+                  },
+                  "female": {
+                    "mean": 90.15,
+                    "sd": 5.0
+                  }
+                },
+                "ballDistance": {
+                  "sourceLabel": "볼거리",
+                  "sourceMeasurementCode": "W3",
+                  "male": {
+                    "mean": 103.04,
+                    "sd": 5.41
+                  },
+                  "female": {
+                    "mean": 93.54,
+                    "sd": 5.12
+                  }
+                },
+                "instepHeight": {
+                  "sourceLabel": "발등높이",
+                  "sourceMeasurementCode": "H4",
+                  "male": {
+                    "mean": 54.84,
+                    "sd": 4.95
+                  },
+                  "female": {
+                    "mean": 48.03,
+                    "sd": 4.51
+                  }
+                },
+                "heelWidth": {
+                  "sourceLabel": "발꿈치너비",
+                  "male": {
+                    "mean": 66.79,
+                    "sd": 3.82
+                  },
+                  "female": {
+                    "mean": 60.43,
+                    "sd": 3.62
+                  }
+                },
+                "ballGirth": {
+                  "sourceLabel": "볼둘레",
+                  "sourceMeasurementCode": "C1",
+                  "male": {
+                    "mean": 250.32,
+                    "sd": 12.18
+                  },
+                  "female": {
+                    "mean": 226.86,
+                    "sd": 11.25
+                  }
+                }
+              },
+              "findings": [
+                "발의 너비·둘레, 길이, 발가락 높이, 발 높이, 내측 형상·각도가 별도 요인으로 분류됨",
+                "같은 길이 범주 안에서도 폭과 높이의 독립적인 개인차를 고려해야 함"
+              ],
+              "limitations": [
+                "개인별 원자료와 공분산 또는 길이 조건부 회귀계수를 확보한 자료가 아님",
+                "성별 없는 UI에 남성 또는 여성 평균을 자동 적용해서는 안 됨",
+                "Size Korea H4의 측정 위치가 Jurca 연구의 55% 발 길이 단면과 동일하다고 확인되지 않았음",
+                "발너비, 볼거리, 볼둘레는 서로 바꿔 쓸 수 없는 별도 측정 항목임",
+                "Nike 또는 Dior 제품의 라스트·안감·내부 공간을 측정한 자료가 아님"
+              ]
+            },
+            {
+              "id": "jurca-2019-1p2m-scans",
+              "title": "Analysis of 1.2 million foot scans from North America, Europe and Asia",
+              "authors": [
+                "Ales Jurca",
+                "Jure Žabkar",
+                "Sašo Džeroski"
+              ],
+              "year": 2019,
+              "doi": "10.1038/s41598-019-55432-z",
+              "sourceUrl": "https://www.nature.com/articles/s41598-019-55432-z",
+              "sourcePdfUrl": "https://rcastoragev2.blob.core.windows.net/4c2f8f6fe6610a4f5bcd944aa31e764c/PMC6914786.pdf",
+              "sourceType": "peer-reviewed-primary-study",
+              "collectionPeriod": [
+                "2017-11-01",
+                "2018-08-31"
+              ],
+              "sampleUnit": "foot scans, not independent people",
+              "sampleSizeScans": 1200847,
+              "regions": {
+                "northAmerica": {
+                  "male": 494833,
+                  "female": 610675,
+                  "total": 1105508
+                },
+                "europe": {
+                  "male": 43064,
+                  "female": 31470,
+                  "total": 74534
+                },
+                "asia": {
+                  "male": 10072,
+                  "female": 10733,
+                  "total": 20805
+                }
+              },
+              "measurementProtocol": {
+                "barefootOnly": true,
+                "posture": "standing, body weight equally distributed between both feet",
+                "lengthClassStepMm": 5,
+                "footLength": "Foot outline bounding-box length along the main foot axis",
+                "footWidth": "Distance between axis-parallel lines through the medial outline extremum at 65–80% of length and lateral extremum at 50–80% of length",
+                "heelWidth": "Width of the transverse section at 15% of foot length",
+                "instepHeight": "Maximum height above the support plane in the transverse section at 55% of foot length"
+              },
+              "gradingResearchPrior": {
+                "isManufacturerGrading": false,
+                "isIndividualPredictionEquation": false,
+                "units": "mm change in population mean per mm change in foot length",
+                "observedSlopes": [
+                  {
+                    "region": "northAmerica",
+                    "sex": "male",
+                    "footLengthRangeMm": [
+                      255,
+                      300
+                    ],
+                    "footWidth": 0.25,
+                    "instepHeight": 0.09,
+                    "heelWidth": 0.21
+                  },
+                  {
+                    "region": "northAmerica",
+                    "sex": "female",
+                    "footLengthRangeMm": [
+                      225,
+                      280
+                    ],
+                    "footWidth": 0.26,
+                    "instepHeight": 0.1,
+                    "heelWidth": 0.23
+                  }
+                ],
+                "finding": "Foot instep height should not be graded with the same factor as forefoot or heel width; observed slopes also vary across length ranges."
+              },
+              "withinLengthDispersion": {
+                "region": "northAmerica",
+                "sex": "male",
+                "footLengthClassMm": 270,
+                "footWidthP5Mm": 94.4,
+                "footWidthP95Mm": 110.2,
+                "instepHeightP5ToP95SpanMm": 16.2
+              },
+              "limitations": [
+                "Retail-customer convenience sample; age was not recorded and some small male feet may be growing boys' feet",
+                "The Asian group combines China, Japan, Korea, Malaysia, Singapore, Taiwan and Thailand; it is not a Korean-only population",
+                "Raw scan data are not publicly available; processed data are available from the corresponding author upon reasonable request",
+                "North American slopes are research references, not Nike grading specifications or Korean individual regression coefficients",
+                "These measurements describe feet, not the usable interior of either GLB product"
+              ]
+            },
+            {
+              "id": "kim-2008-korean-running-last",
+              "title": "Development of the Running shoe last considering the Foot shape",
+              "authors": [
+                "Seong-ok Kim",
+                "Myung-hun Kim",
+                "Kwang-sup Moon"
+              ],
+              "year": 2008,
+              "institution": "Korea Institute of Footwear \u0026 Leather Technology",
+              "sourceUrl": "https://www.jstage.jst.go.jp/article/jergo/44spl/0/44spl_0_450/_pdf",
+              "sourceType": "primary-conference-paper",
+              "sampleSizeDescription": "approximately 3000 people, reported by the authors",
+              "standardFootMm": {
+                "footLength": 259.1,
+                "footWidth": 101.4,
+                "heelWidth": 67.2,
+                "instepHeight": 59.9
+              },
+              "limitations": [
+                "표준발의 설계 참고 치수이며 한국 성인 전체의 평균이라고 해석하지 않음",
+                "Jordan 제품 내부 실측이 아님",
+                "현 연구들과 측정 정의가 완전히 동일하다고 확인되지 않았음"
+              ]
+            },
+            {
+              "id": "herbaut-2016-tennis-fit",
+              "title": "Determination of optimal shoe dimensions for occasional and regular tennis players",
+              "authors": [
+                "Alexis Herbaut",
+                "Matthieu Foissac",
+                "Ales Jurca",
+                "Nils Guéguen"
+              ],
+              "year": 2016,
+              "doi": "10.1177/1754337115598678",
+              "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1754337115598678",
+              "sourceType": "peer-reviewed-primary-study",
+              "sampleSizePeople": 34,
+              "context": "tennis players, occasional and regular groups, four tennis shoes",
+              "reportedOptimalToeAllowanceApproximatelyMm": 10,
+              "limitations": [
+                "스포츠·숙련도·소재·선호에 의존하는 결과",
+                "모든 신발에 적용되는 단일 합격 한도를 검증한 자료가 아님",
+                "Dior 또는 Air Jordan High 내부 실측이 아님"
+              ]
+            },
+            {
+              "id": "au-2011-fit-allowances",
+              "title": "A methodology for determining the allowances for fitting footwear",
+              "authors": [
+                "Emily Y. L. Au",
+                "Ravindra S. Goonetilleke",
+                "Channa P. Witana",
+                "Shuping Xiong"
+              ],
+              "year": 2011,
+              "doi": "10.1504/IJHFMS.2011.045003",
+              "sourceUrl": "https://www.inderscience.com/info/e_inarticle.php?artid=45003",
+              "sourceType": "peer-reviewed-primary-study-publisher-abstract",
+              "method": "psychophysical in-shoe simulator study, walking and regional subjective ratings",
+              "finding": "폭·볼둘레·허리둘레의 허용 차이는 각각 다르게 나타남",
+              "limitations": [
+                "출판사 초록만으로 허용 범위의 하한이나 부위별 압력 상한을 추정하지 않음",
+                "전체 폭 차이와 한쪽 벽까지의 간격을 혼동하지 않음",
+                "단일 제품 또는 모든 사용자에게 보편적으로 적용되는 수치가 아님"
+              ]
+            }
+          ],
+          "implementationGuardrails": [
+            "사용자가 지정한 길이·볼 너비·발등 높이는 보존한다.",
+            "통계는 미입력 형상의 prior 또는 추정 오차 참고로만 사용하며, 성별·나이를 자동 추정하지 않는다.",
+            "성별 전체 평균·표준편차를 길이 조건부 분포나 개인 회귀로 해석하지 않는다.",
+            "현 footShape.top은 길이50% 지점에 입력 instepHeight를 배치한다. Jurca의55% 지점과 일치시키기 전까지 해당 통계와 직접 동일시하지 않는다.",
+            "연구의 발 치수와 제조사 표기 사이즈, 깔창 길이, 신발 내부 실측 치수는 서로 구분한다.",
+            "통계상 흔한 발이라는 이유만으로 간섭·압력 판정을 통과시키지 않는다.",
+            "이 자료는38kPa 또는0.001mm 같은 기존 수치 한도를 실험적으로 검증하지 않는다."
+          ]
+        },
+        "verifiedAt": "2026-10-30"
+      }
     },
     "fitTargets": [
       {
@@ -467,6 +916,7 @@ window.LF.assetCatalog = [
       ]
     },
     "fit": {
+      "evidenceProfile": "jordan-family-research-v1",
       "sizeChart": {
         "version": 1,
         "title": "나이키 남성 신발 사이즈 차트",
@@ -832,7 +1282,453 @@ window.LF.assetCatalog = [
           }
         ]
       },
-      "toeAllowanceMm": 12
+      "toeAllowanceMm": 12,
+      "evidence": {
+        "selectedProduct": {
+          "displayName": "Air Jordan High",
+          "expectedProduct": "Nike Air Jordan, high-top display model",
+          "expectedStyleCode": null,
+          "exactProductIdentityVerified": false,
+          "meshSizeVerified": false,
+          "meshMetadata": {
+            "title": "Nike Air Jordan",
+            "author": "Ar41k",
+            "license": "CC-BY-4.0",
+            "sourceUrl": "https://sketchfab.com/3d-models/nike-air-jordan-fd462c530d974f33a523d88a7562f1cf"
+          },
+          "identityNote": "No retail style code, manufacture year, label size or measured interior is stated in the GLB. A visual colourway is insufficient to identify a High OG SKU.",
+          "exactInteriorMeasurements": {
+            "isMeasured": false,
+            "innerLengthMm": null,
+            "insoleLengthMm": null,
+            "ballWidthMm": null,
+            "heelWidthMm": null,
+            "instepHeightMm": null,
+            "toeBoxWidthMm": null,
+            "toeBoxHeightMm": null,
+            "status": "matching-SKU-and-size-interior-measurements-not-found"
+          },
+          "manufacturerChartSourceIds": [
+            "nike-kr-men",
+            "nike-br-men"
+          ],
+          "relatedModelMeasurementIds": [
+            "runrepeat-aj1-low-us9",
+            "runrepeat-aj1-mid-us9"
+          ],
+          "exteriorCrossCheckIds": [],
+          "materialSourceIds": []
+        },
+        "relatedMeasurements": [
+          {
+            "id": "runrepeat-aj1-low-us9",
+            "productName": "Air Jordan 1 Low (regular model, not Dior)",
+            "styleCode": null,
+            "measurementScope": "related-model-laboratory-sample",
+            "exactMatchToSelectedProducts": false,
+            "size": {
+              "system": "US-men",
+              "label": 9,
+              "equivalentKrLabelMm": 270,
+              "equivalenceSourceId": "nike-kr-men"
+            },
+            "measurements": {
+              "innerLengthMm": 272.0,
+              "insoleLengthMm": null,
+              "ballWidthMm": 94.9,
+              "toeBoxWidthMm": 68.5,
+              "toeBoxHeightMm": 29.8,
+              "instepHeightMm": null,
+              "heelWidthMm": null
+            },
+            "sourceIds": [
+              "runrepeat-aj1-low",
+              "runrepeat-methodology"
+            ],
+            "methodId": "runrepeat-gel-interior-v1.8",
+            "referenceSizeBasis": "Review states men's US9 for the tested shoe; laboratory purchase protocol also uses men's US9.",
+            "nominalPopulationSampleCount": null,
+            "measuredUncertaintyMm": null,
+            "limitation": "One reviewed product/model size is not a size-run or selected-product interior scan. Do not apply these values to Dior or High as exact measurements."
+          },
+          {
+            "id": "runrepeat-aj1-mid-us9",
+            "productName": "Air Jordan 1 Mid (not High)",
+            "styleCode": null,
+            "measurementScope": "related-model-laboratory-sample",
+            "exactMatchToSelectedProducts": false,
+            "size": {
+              "system": "US-men",
+              "label": 9,
+              "equivalentKrLabelMm": 270,
+              "equivalenceSourceId": "nike-kr-men"
+            },
+            "measurements": {
+              "innerLengthMm": 271.2,
+              "insoleLengthMm": null,
+              "ballWidthMm": 94.9,
+              "toeBoxWidthMm": 70.4,
+              "toeBoxHeightMm": 25.7,
+              "instepHeightMm": null,
+              "heelWidthMm": null
+            },
+            "sourceIds": [
+              "runrepeat-aj1-mid",
+              "runrepeat-methodology"
+            ],
+            "methodId": "runrepeat-gel-interior-v1.8",
+            "referenceSizeBasis": "Laboratory standard purchasing protocol uses men's US9; exact retail SKU not established from the reported dimension table.",
+            "nominalPopulationSampleCount": null,
+            "measuredUncertaintyMm": null,
+            "limitation": "Mid is not the selected High. Family-reference data only; no selected-product instep height is available."
+          }
+        ],
+        "sources": [
+          {
+            "id": "nike-kr-men",
+            "url": "https://www.nike.com/kr/size-fit/mens-footwear",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-foot-size-chart",
+            "scope": "General men's footwear chart, measurement instructions, label/foot-length distinction; no selected-product interior L/W/H."
+          },
+          {
+            "id": "nike-br-men",
+            "url": "https://static.nike.com.br/web/prd/tabela-de-medidas.html",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-foot-size-chart",
+            "scope": "Independent regional Nike chart corroborating men's US-to-foot-length values; not the Brazilian label mapping for Korean product labels."
+          },
+          {
+            "id": "runrepeat-aj1-low",
+            "url": "https://runrepeat.com/air-jordan-1-low",
+            "retrievedAt": "2026-10-30",
+            "type": "independent-laboratory-original-measurements",
+            "scope": "Regular AJ1 Low, unrelated retail SKU to Dior; current review dimension values."
+          },
+          {
+            "id": "runrepeat-aj1-mid",
+            "url": "https://runrepeat.com/air-jordan-1-mid",
+            "retrievedAt": "2026-10-30",
+            "type": "independent-laboratory-original-measurements",
+            "scope": "AJ1 Mid, not the selected High; current review dimension values."
+          },
+          {
+            "id": "runrepeat-methodology",
+            "url": "https://runrepeat.com/testing-methodology",
+            "retrievedAt": "2026-10-30",
+            "type": "measurement-method-original-source",
+            "scope": "Men's US9 procurement, gel-mold interior method and the 28.3mm toe-measurement station."
+          },
+          {
+            "id": "rakuten-dior-low-us9",
+            "url": "https://item.rakuten.co.jp/kaitorikomachi/di0527004-y05/",
+            "retrievedAt": "2026-10-30",
+            "type": "seller-approximate-exterior-measurements",
+            "scope": "Specific CN8608-002 used pair; JP27/US9/EU42.5; outsole and overall height only.",
+            "accessNote": "Search excerpt accessible; direct page fetch returned a character-decoding error."
+          },
+          {
+            "id": "dior-air-dior-production",
+            "url": "https://www.dior.com/couture/var/dior/storage/original/application/eebf40d9db7bd39bb8a2d61670783fbc.pdf",
+            "retrievedAt": "2026-10-30",
+            "type": "manufacturer-production-description",
+            "scope": "Italian leather and retained AJ1 design language. No thickness, elastic constants, interior measurements or test-proven stretch budgets."
+          }
+        ],
+        "anthropometry": {
+          "version": 1,
+          "verifiedAt": "2026-10-30",
+          "title": "발 치수 인체계측 연구 근거",
+          "purpose": "측정 정의, 미입력 형상의 추정 오차 및 비례 보정 방식의 참고 자료",
+          "isProductMeasurement": false,
+          "mayOverrideUserMeasurements": false,
+          "maySelectUserSexFromMeasurements": false,
+          "providesValidatedPressureThresholds": false,
+          "studies": [
+            {
+              "id": "kwon-2024-sizekorea8",
+              "title": "한국인 발의 크기 및 형태 분류 분석 -8차 사이즈코리아 20∼69세 데이터를 중심으로-",
+              "authors": [
+                "권은순",
+                "이하경",
+                "이예진"
+              ],
+              "year": 2024,
+              "doi": "10.5934/kjhe.2024.33.2.251",
+              "sourceUrl": "https://kjhe.or.kr/_PR/view/?aidx=40564\u0026bidx=3659",
+              "sourceType": "peer-reviewed-primary-study",
+              "sourceTable": "Table 4",
+              "dataset": "8th Size Korea, cited in the paper as Size Korea 2021",
+              "country": "Korea",
+              "ageRangeYears": [
+                20,
+                69
+              ],
+              "sampleSizePeople": 4503,
+              "samplesBySex": {
+                "male": 2000,
+                "female": 2503
+              },
+              "measurementMethod": "3D foot scan",
+              "weightBearingProtocol": "원조사 측정 매뉴얼에서 독립 확인하지 않았음",
+              "statisticsType": "성별 전체 표본의 평균 및 표준편차; 발 길이 조건부 통계가 아님",
+              "unit": "mm",
+              "statistics": {
+                "footStraightLength": {
+                  "sourceLabel": "발직선길이",
+                  "male": {
+                    "mean": 256.41,
+                    "sd": 10.86
+                  },
+                  "female": {
+                    "mean": 234.18,
+                    "sd": 9.7
+                  }
+                },
+                "footWidth": {
+                  "sourceLabel": "발너비",
+                  "sourceMeasurementCode": "W2",
+                  "male": {
+                    "mean": 99.35,
+                    "sd": 5.15
+                  },
+                  "female": {
+                    "mean": 90.15,
+                    "sd": 5.0
+                  }
+                },
+                "ballDistance": {
+                  "sourceLabel": "볼거리",
+                  "sourceMeasurementCode": "W3",
+                  "male": {
+                    "mean": 103.04,
+                    "sd": 5.41
+                  },
+                  "female": {
+                    "mean": 93.54,
+                    "sd": 5.12
+                  }
+                },
+                "instepHeight": {
+                  "sourceLabel": "발등높이",
+                  "sourceMeasurementCode": "H4",
+                  "male": {
+                    "mean": 54.84,
+                    "sd": 4.95
+                  },
+                  "female": {
+                    "mean": 48.03,
+                    "sd": 4.51
+                  }
+                },
+                "heelWidth": {
+                  "sourceLabel": "발꿈치너비",
+                  "male": {
+                    "mean": 66.79,
+                    "sd": 3.82
+                  },
+                  "female": {
+                    "mean": 60.43,
+                    "sd": 3.62
+                  }
+                },
+                "ballGirth": {
+                  "sourceLabel": "볼둘레",
+                  "sourceMeasurementCode": "C1",
+                  "male": {
+                    "mean": 250.32,
+                    "sd": 12.18
+                  },
+                  "female": {
+                    "mean": 226.86,
+                    "sd": 11.25
+                  }
+                }
+              },
+              "findings": [
+                "발의 너비·둘레, 길이, 발가락 높이, 발 높이, 내측 형상·각도가 별도 요인으로 분류됨",
+                "같은 길이 범주 안에서도 폭과 높이의 독립적인 개인차를 고려해야 함"
+              ],
+              "limitations": [
+                "개인별 원자료와 공분산 또는 길이 조건부 회귀계수를 확보한 자료가 아님",
+                "성별 없는 UI에 남성 또는 여성 평균을 자동 적용해서는 안 됨",
+                "Size Korea H4의 측정 위치가 Jurca 연구의 55% 발 길이 단면과 동일하다고 확인되지 않았음",
+                "발너비, 볼거리, 볼둘레는 서로 바꿔 쓸 수 없는 별도 측정 항목임",
+                "Nike 또는 Dior 제품의 라스트·안감·내부 공간을 측정한 자료가 아님"
+              ]
+            },
+            {
+              "id": "jurca-2019-1p2m-scans",
+              "title": "Analysis of 1.2 million foot scans from North America, Europe and Asia",
+              "authors": [
+                "Ales Jurca",
+                "Jure Žabkar",
+                "Sašo Džeroski"
+              ],
+              "year": 2019,
+              "doi": "10.1038/s41598-019-55432-z",
+              "sourceUrl": "https://www.nature.com/articles/s41598-019-55432-z",
+              "sourcePdfUrl": "https://rcastoragev2.blob.core.windows.net/4c2f8f6fe6610a4f5bcd944aa31e764c/PMC6914786.pdf",
+              "sourceType": "peer-reviewed-primary-study",
+              "collectionPeriod": [
+                "2017-11-01",
+                "2018-08-31"
+              ],
+              "sampleUnit": "foot scans, not independent people",
+              "sampleSizeScans": 1200847,
+              "regions": {
+                "northAmerica": {
+                  "male": 494833,
+                  "female": 610675,
+                  "total": 1105508
+                },
+                "europe": {
+                  "male": 43064,
+                  "female": 31470,
+                  "total": 74534
+                },
+                "asia": {
+                  "male": 10072,
+                  "female": 10733,
+                  "total": 20805
+                }
+              },
+              "measurementProtocol": {
+                "barefootOnly": true,
+                "posture": "standing, body weight equally distributed between both feet",
+                "lengthClassStepMm": 5,
+                "footLength": "Foot outline bounding-box length along the main foot axis",
+                "footWidth": "Distance between axis-parallel lines through the medial outline extremum at 65–80% of length and lateral extremum at 50–80% of length",
+                "heelWidth": "Width of the transverse section at 15% of foot length",
+                "instepHeight": "Maximum height above the support plane in the transverse section at 55% of foot length"
+              },
+              "gradingResearchPrior": {
+                "isManufacturerGrading": false,
+                "isIndividualPredictionEquation": false,
+                "units": "mm change in population mean per mm change in foot length",
+                "observedSlopes": [
+                  {
+                    "region": "northAmerica",
+                    "sex": "male",
+                    "footLengthRangeMm": [
+                      255,
+                      300
+                    ],
+                    "footWidth": 0.25,
+                    "instepHeight": 0.09,
+                    "heelWidth": 0.21
+                  },
+                  {
+                    "region": "northAmerica",
+                    "sex": "female",
+                    "footLengthRangeMm": [
+                      225,
+                      280
+                    ],
+                    "footWidth": 0.26,
+                    "instepHeight": 0.1,
+                    "heelWidth": 0.23
+                  }
+                ],
+                "finding": "Foot instep height should not be graded with the same factor as forefoot or heel width; observed slopes also vary across length ranges."
+              },
+              "withinLengthDispersion": {
+                "region": "northAmerica",
+                "sex": "male",
+                "footLengthClassMm": 270,
+                "footWidthP5Mm": 94.4,
+                "footWidthP95Mm": 110.2,
+                "instepHeightP5ToP95SpanMm": 16.2
+              },
+              "limitations": [
+                "Retail-customer convenience sample; age was not recorded and some small male feet may be growing boys' feet",
+                "The Asian group combines China, Japan, Korea, Malaysia, Singapore, Taiwan and Thailand; it is not a Korean-only population",
+                "Raw scan data are not publicly available; processed data are available from the corresponding author upon reasonable request",
+                "North American slopes are research references, not Nike grading specifications or Korean individual regression coefficients",
+                "These measurements describe feet, not the usable interior of either GLB product"
+              ]
+            },
+            {
+              "id": "kim-2008-korean-running-last",
+              "title": "Development of the Running shoe last considering the Foot shape",
+              "authors": [
+                "Seong-ok Kim",
+                "Myung-hun Kim",
+                "Kwang-sup Moon"
+              ],
+              "year": 2008,
+              "institution": "Korea Institute of Footwear \u0026 Leather Technology",
+              "sourceUrl": "https://www.jstage.jst.go.jp/article/jergo/44spl/0/44spl_0_450/_pdf",
+              "sourceType": "primary-conference-paper",
+              "sampleSizeDescription": "approximately 3000 people, reported by the authors",
+              "standardFootMm": {
+                "footLength": 259.1,
+                "footWidth": 101.4,
+                "heelWidth": 67.2,
+                "instepHeight": 59.9
+              },
+              "limitations": [
+                "표준발의 설계 참고 치수이며 한국 성인 전체의 평균이라고 해석하지 않음",
+                "Jordan 제품 내부 실측이 아님",
+                "현 연구들과 측정 정의가 완전히 동일하다고 확인되지 않았음"
+              ]
+            },
+            {
+              "id": "herbaut-2016-tennis-fit",
+              "title": "Determination of optimal shoe dimensions for occasional and regular tennis players",
+              "authors": [
+                "Alexis Herbaut",
+                "Matthieu Foissac",
+                "Ales Jurca",
+                "Nils Guéguen"
+              ],
+              "year": 2016,
+              "doi": "10.1177/1754337115598678",
+              "sourceUrl": "https://journals.sagepub.com/doi/abs/10.1177/1754337115598678",
+              "sourceType": "peer-reviewed-primary-study",
+              "sampleSizePeople": 34,
+              "context": "tennis players, occasional and regular groups, four tennis shoes",
+              "reportedOptimalToeAllowanceApproximatelyMm": 10,
+              "limitations": [
+                "스포츠·숙련도·소재·선호에 의존하는 결과",
+                "모든 신발에 적용되는 단일 합격 한도를 검증한 자료가 아님",
+                "Dior 또는 Air Jordan High 내부 실측이 아님"
+              ]
+            },
+            {
+              "id": "au-2011-fit-allowances",
+              "title": "A methodology for determining the allowances for fitting footwear",
+              "authors": [
+                "Emily Y. L. Au",
+                "Ravindra S. Goonetilleke",
+                "Channa P. Witana",
+                "Shuping Xiong"
+              ],
+              "year": 2011,
+              "doi": "10.1504/IJHFMS.2011.045003",
+              "sourceUrl": "https://www.inderscience.com/info/e_inarticle.php?artid=45003",
+              "sourceType": "peer-reviewed-primary-study-publisher-abstract",
+              "method": "psychophysical in-shoe simulator study, walking and regional subjective ratings",
+              "finding": "폭·볼둘레·허리둘레의 허용 차이는 각각 다르게 나타남",
+              "limitations": [
+                "출판사 초록만으로 허용 범위의 하한이나 부위별 압력 상한을 추정하지 않음",
+                "전체 폭 차이와 한쪽 벽까지의 간격을 혼동하지 않음",
+                "단일 제품 또는 모든 사용자에게 보편적으로 적용되는 수치가 아님"
+              ]
+            }
+          ],
+          "implementationGuardrails": [
+            "사용자가 지정한 길이·볼 너비·발등 높이는 보존한다.",
+            "통계는 미입력 형상의 prior 또는 추정 오차 참고로만 사용하며, 성별·나이를 자동 추정하지 않는다.",
+            "성별 전체 평균·표준편차를 길이 조건부 분포나 개인 회귀로 해석하지 않는다.",
+            "현 footShape.top은 길이50% 지점에 입력 instepHeight를 배치한다. Jurca의55% 지점과 일치시키기 전까지 해당 통계와 직접 동일시하지 않는다.",
+            "연구의 발 치수와 제조사 표기 사이즈, 깔창 길이, 신발 내부 실측 치수는 서로 구분한다.",
+            "통계상 흔한 발이라는 이유만으로 간섭·압력 판정을 통과시키지 않는다.",
+            "이 자료는38kPa 또는0.001mm 같은 기존 수치 한도를 실험적으로 검증하지 않는다."
+          ]
+        },
+        "verifiedAt": "2026-10-30"
+      }
     },
     "fitTargets": [
       {
