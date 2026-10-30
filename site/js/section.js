@@ -175,7 +175,7 @@
       for (let j = 0; j < fnt; j++) {
         const p = fpts[j], q = fpts[(j + 1) % fnt];
         if (p.ex || q.ex) col.set(cssVar('--skin', '#d6cfc7'));
-        else if (p.unknown || q.unknown) col.set('#87949f');
+        else if (p.unknown || q.unknown) col.set('#e32636');
         else {
           const v = p.sole ? Math.min(0, Math.max(-1.5, p.e)) * 0.6 : p.P > 0 ? p.P : p.e;
           LF.Viewer.heatColor(v, col);
@@ -213,7 +213,7 @@
       g.fill();
       label(X(worst.z), Y(worst.y) - 18, `${fmt(worst.P, 0)} kPa`, '#d63a3a');
     }
-    if (footInside && unresolved) label(X(unresolved.z),Y(unresolved.y)-18,'변형 한계 초과', '#657584');
+    if (footInside && unresolved) label(X(unresolved.z),Y(unresolved.y)-18,'변형 한계 초과', '#e32636');
     if (footInside && best && best.e < -1.5) {
       label(X(best.z), Y(best.y) + (best.y > (minY + maxY) / 2 ? -18 : 18), `여유 ${fmt(-best.e)}mm`, '#2b59c3');
     }

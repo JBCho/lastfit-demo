@@ -43,6 +43,7 @@
   const selectedGLB = () => state.libraryId ? library.get(state.libraryId) : null;
   const recommendationCache = new Map();
   let recommendationEpoch = 0, recommendationTimer = null, recommendationKey = null, recommendationResult = null;
+  let autoSizePending = false;
 
   function recommendationInputKey(entry) {
     return JSON.stringify([entry.id, state.footSide, state.foot, state.pref]);
@@ -87,14 +88,32 @@
     $('applyRecommendedSize').textContent = applied ? '적용됨' : reference ? '신어보기' : '적용';
   }
 
+  function applyRecommendation(entry, result) {
+    if (!entry || selectedGLB() !== entry || state.phase !== 2 || !result ||
+        !['ready','reference'].includes(result.status) || !Number.isFinite(result.size) ||
+        result.requiresVerification !== false || recommendationKey !== recommendationInputKey(entry)) return;
+    if (state.size === result.size && entry.nominalSizeMm === result.size) return;
+    registerGLBFit(entry, result.size); state.size = result.size;
+    recompute({ model: true });
+  }
+
+  function finishRecommendation(entry, result) {
+    paintRecommendation(result);
+    if (!autoSizePending || state.phase !== 2 || selectedGLB() !== entry ||
+        recommendationKey !== recommendationInputKey(entry) || !result || result.status === 'pending') return;
+    // Consume the intent before recomputing so cached renders cannot undo manual selection.
+    autoSizePending = false;
+    applyRecommendation(entry, result);
+  }
+
   function requestRecommendation(entry) {
     if (state.phase !== 2 || !entry || !entry.registration || !LF.sizeRecommendation) return;
     const key = recommendationInputKey(entry);
-    if (recommendationKey === key) { paintRecommendation(recommendationResult); return; }
+    if (recommendationKey === key) { finishRecommendation(entry, recommendationResult); return; }
     recommendationKey = key;
     const epoch = ++recommendationEpoch;
     clearTimeout(recommendationTimer);
-    if (recommendationCache.has(key)) { paintRecommendation(recommendationCache.get(key)); return; }
+    if (recommendationCache.has(key)) { finishRecommendation(entry, recommendationCache.get(key)); return; }
     paintRecommendation({ status: 'pending', reason: '230–300 mm에서 길이·볼·발등 확인 중…' });
     const foot = JSON.parse(JSON.stringify(state.foot)), pref = JSON.parse(JSON.stringify(state.pref)), side = state.footSide;
     const current = () => recommendationEpoch === epoch && state.phase === 2 && selectedGLB() === entry && recommendationInputKey(entry) === key;
@@ -148,9 +167,9 @@
         if (!current()) return;
         recommendationCache.set(key, result);
         if (recommendationCache.size > 24) recommendationCache.delete(recommendationCache.keys().next().value);
-        paintRecommendation(result);
+        finishRecommendation(entry, result);
       } catch (error) {
-        if (current()) paintRecommendation({ status: 'unknown', reason: '내부 형상을 확인하지 못해 추천을 보류합니다.' });
+        if (current()) finishRecommendation(entry, { status: 'unknown', reason: '내부 형상을 확인하지 못해 추천을 보류합니다.' });
       }
     }, 280);
   }
@@ -201,6 +220,7 @@
     state.preset = 'custom';
     state.footSource = 'manual';
     delete state.foot.silhouetteProfile;
+    if (state.phase === 2) autoSizePending = true;
     if (state.phase === 2 && state.view.mode !== 'fit') selectViewMode('fit');
     if (state.phase === 2) requestRecommendation(selectedGLB());
     changed({ foot: true });
@@ -235,6 +255,7 @@
     state.w = 0;
     state.productAsset = { modelId: entry.modelId, libraryId: entry.id, label: entry.name, demo: entry.demo };
     state.view.shoe = true;
+    if (state.phase === 2) autoSizePending = true;
     recompute({ model: true });
     if(state.phase===2)selectViewMode(state.view.mode);
   }
@@ -245,6 +266,7 @@
     select.value=state.size;
     select.addEventListener('change',()=>{
       const entry=selectedGLB();if(!entry)return;
+      autoSizePending = false;
       try {
         const size=LF.productSizing.label(select.value);
         registerGLBFit(entry,size);state.size=size;
@@ -256,10 +278,8 @@
       }
     });
     $('applyRecommendedSize').addEventListener('click', () => {
-      const entry = selectedGLB(), result = recommendationResult;
-      if (!entry || !result || !['ready','reference'].includes(result.status) || result.requiresVerification !== false || recommendationKey !== recommendationInputKey(entry)) return;
-      registerGLBFit(entry, result.size); state.size = result.size;
-      recompute({ model: true });
+      autoSizePending = false;
+      applyRecommendation(selectedGLB(), recommendationResult);
     });
   }
 
@@ -392,14 +412,16 @@
       if(state.phase===number)$(id).setAttribute('aria-current','step');else $(id).removeAttribute('aria-current');
     }
     $('phaseAction').textContent=setup?'착화감 확인하기 →':'← 발 설정으로 돌아가기';
-    $('phaseHint').textContent=setup?'발 방향과 치수를 내 발에 맞게 조절하세요.':'신발을 신어보면서 발 모양도 계속 수정할 수 있습니다.';
+    $('phaseHint').textContent=setup?'발 방향과 치수를 내 발에 맞게 조절하세요.':'입력한 발에 맞춰 사이즈를 자동 선택합니다. 치수는 계속 조정할 수 있습니다.';
     for(const id of ['modeSeg','shoeTog','secTog','productControls','rack','assetStatus'])$(id).hidden=setup;
     $('footPanelNote').textContent=`${state.footSide==='left'?'왼발':'오른발'} · ${setup?'발 모양 설정':'착화 기준'}`;
   }
 
   function setPhase(phase) {
+    if (phase === 2 && state.phase !== 2) autoSizePending = true;
     state.phase=phase===2?2:1;
     if(state.phase===1){
+      autoSizePending = false;
       recommendationEpoch++; clearTimeout(recommendationTimer); recommendationKey=null;
       state.view.section=false;$('sectionCard').hidden=true;viewer.setSection(null);
       $('secTog').setAttribute('aria-pressed','false');

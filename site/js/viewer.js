@@ -17,7 +17,8 @@
     [-12, '#2b59c3'], [-6, '#6f9fe0'], [-2.5, '#b4d8ee'], [0, '#c6ead0'],
     [8, '#e2ee9c'], [15, '#f5d257'], [25, '#f29233'], [38, '#d63a3a'], [55, '#951546'],
   ].map(([s, hex]) => [s, new THREE.Color(hex).convertSRGBToLinear()]);
-  const UNKNOWN_PRESSURE = new THREE.Color('#87949f').convertSRGBToLinear();
+  // Red marks unresolved fit; it does not imply a calculated pressure value.
+  const UNKNOWN_PRESSURE = new THREE.Color('#e32636').convertSRGBToLinear();
 
   function heatColor(s, out) {
     if (s <= HEAT[0][0]) return out.copy(HEAT[0][1]);
