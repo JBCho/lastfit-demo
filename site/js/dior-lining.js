@@ -17,7 +17,7 @@
   }
   function prepare(registration,source,index,fixed){
     const profile=registration.productInput.radialProfile,L=registration.productInput.length;
-    if(!profile||profile.source!=='dior-reference-last-v1')return null;
+    if(!profile||!['dior-reference-last-v1','jordan-high-reference-last-v1'].includes(profile.source))return null;
     const positions=source.slice(),deep=new Uint8Array(source.length/3);
     const collider=LF.diorCavity.referenceSurface(registration),clearance=1.0;
     const query={point:{},normal:{},triangle:[],barycentric:[]};
@@ -82,7 +82,7 @@
       maxPreparationMm=Math.max(maxPreparationMm,change);
       if(!deep[k])maxOuterPreparationMm=Math.max(maxOuterPreparationMm,change);
     }
-    return{positions,indices:Uint32Array.from(kept),stats:{source:'fixed-dior-lining-reconstruction',movedVertexCount:moved,
+    return{positions,indices:Uint32Array.from(kept),stats:{source:profile.source==='dior-reference-last-v1'?'fixed-dior-lining-reconstruction':'fixed-high-lining-reconstruction',movedVertexCount:moved,
       maxPreparationMm,maxOuterPreparationMm,removedInternalTriangles:(count-kept.length)/3,elasticDeformation:false}};
   }
   LF.diorLining={prepare};

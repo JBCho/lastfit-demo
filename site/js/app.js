@@ -77,7 +77,8 @@
     const reference = result && result.status === 'reference';
     const ready = result && (result.status === 'ready' || reference) && Number.isFinite(result.size);
     $('recommendationLabel').textContent = reference ? '참고 사이즈' : '추천 사이즈';
-    $('sizeRecommendation').setAttribute('title',reference?'제품 실측 부족 · 착화 적합 미확인 · 제조사·관련 모델 기반 참고값':'계산용 내부 형상 기반 추정이며 실물 적합 보증이 아닙니다.');
+    const entry=selectedGLB(),fitNote=entry&&entry.catalog.fit&&entry.catalog.fit.fitNote;
+    $('sizeRecommendation').setAttribute('title',(fitNote?fitNote+' · ':'')+(reference?'제품 실측 부족 · 착화 적합 미확인 · 제조사·관련 모델 기반 참고값':'계산용 내부 형상 기반 추정이며 실물 적합 보증이 아닙니다.'));
     $('recommendedSize').textContent = ready ? `${result.size} mm` : result && result.status === 'none' ? '추천 없음'
       : result && result.status === 'unknown' ? '추천 보류' : '계산 중…';
     $('recommendationReason').textContent = result && result.status !== 'none' && result.reason || '';

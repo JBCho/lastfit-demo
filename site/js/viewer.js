@@ -1094,9 +1094,9 @@
   // Dior's layered render islands follow one solved garment surface. Running
   // another independent collision solve per island would separate glued layers.
   Viewer.prototype.deformDiorAsset = function (display, deform) {
-    const physics = LF.diorFit, renderPositions = display.compressedFpos || deform.fpos;
+    const physics = LF.diorFit, profile = display.shoe.model.fitPhysicsProfile, renderPositions = display.compressedFpos || deform.fpos;
     let cache = this.assetDrapeCache;
-    if (!cache || cache.profile !== physics.PROFILE || cache.display !== display || cache.deform !== deform || cache.renderPositions !== renderPositions) {
+    if (!cache || cache.profile !== profile || cache.display !== display || cache.deform !== deform || cache.renderPositions !== renderPositions) {
       const raw = LF.glbFit.createDeformationField(display, deform.defl);
       const field = physics.enhanceField(raw, display);
       const collider = LF.contactDrape.prepare(display);
@@ -1125,7 +1125,7 @@
         for (const key of Object.keys(collisionStats)) if (!/Count$/.test(key))
           collisionStats[key] = Math.max(collisionStats[key], Number(stats[key]) || 0);
       }
-      cache = this.assetDrapeCache = { profile: physics.PROFILE, display, deform, renderPositions, field, collider, parts,
+      cache = this.assetDrapeCache = { profile, display, deform, renderPositions, field, collider, parts,
         maxMm, vertexCount, deformedVertexCount, collisionStats, closeMm: 0, maxDisplacementMm: maxMm };
     }
     this.assetField = cache.field;
@@ -1143,7 +1143,7 @@
       maxDisplacementMm: cache.maxMm, deformedVertexCount: cache.deformedVertexCount, vertexCount: cache.vertexCount,
       ...cache.collisionStats, visualRemainingPenetrationMm: cache.collisionStats.remainingPenetrationMm,
       collisionSolverAvailable: true, exaggeration: 1, enabled: this.deformationEnabled !== false, worn,
-      fitPhysicsProfile: physics.PROFILE, shell: cache.field.shellStats };
+      fitPhysicsProfile: profile, shell: cache.field.shellStats };
     this.dirty = true;
   };
 

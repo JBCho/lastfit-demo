@@ -90,6 +90,7 @@
     // maximum width or a validated stretch allowance of either selected model.
     if(occupiedWidth-mean(floorEstimate.map(v=>v.ballWidthMm))>POLICY.maximumWidthExtrapolationMm)return null;
     const candidates=[];
+    const highGeometry=catalog.calibration&&catalog.calibration.cavityProfile==='jordan-high-reference-last-v1';
     for(const row of rows){
       if(row.size<minimum||row.size>minimum+POLICY.maximumChartUpsizeSteps*STEP)continue;
       const estimatesAtSize=estimates(row),lengths=estimatesAtSize.map(v=>v.innerLengthMm),widths=estimatesAtSize.map(v=>v.ballWidthMm);
@@ -97,11 +98,20 @@
       const widthExcess=occupiedWidth-estimatedWidth,widthRisk=Math.max(0,widthExcess-POLICY.expectedWidthComplianceMm);
       const roomValid=toeRoom>=POLICY.nominalToeRoomMm[0]&&toeRoom<=POLICY.nominalToeRoomMm[1];
       const widthValid=widthExcess<=POLICY.maximumWidthExtrapolationMm;
+      // For High, an unrelated Low/Mid mean must not reselect a size whose own
+      // fixed product geometry already shows inadequate/excessive toe room.
+      // This only rules out a known length conflict; it never turns a failed
+      // width/height/pressure solve into a successful fit.
+      const ownCandidate=highGeometry&&simulationResult&&(simulationResult.candidates||[]).find(c=>c.size===row.size);
+      const ownLength=ownCandidate&&ownCandidate.metrics&&ownCandidate.metrics.length;
+      const ownRoomValid=!ownLength||!finite(ownLength.tipGapMm)||!finite(ownLength.usableGapMm)||
+        (ownLength.tipGapMm>=5&&ownLength.tipGapMm<=32&&ownLength.usableGapMm>=5&&ownLength.usableGapMm<=18);
       const cost=(row.size-minimum)/STEP*POLICY.nominalSizeStepPenalty+
         POLICY.toeRoomPenaltyWeight*((toeRoom-POLICY.idealToeRoomMm)/4)**2+
         POLICY.widthPenaltyWeight*(widthRisk/POLICY.widthPenaltyScaleMm)**2;
-      candidates.push({size:row.size,chartReferenceFootLengthMm:row.footLengthMm,eligible:roomValid&&widthValid,cost,
-        reason:!roomValid?'related-model-toe-room-outside-reference-window':!widthValid?'width-outside-reference-scope':'reference-only-not-fit-verified',
+      candidates.push({size:row.size,chartReferenceFootLengthMm:row.footLengthMm,eligible:roomValid&&widthValid&&ownRoomValid,cost,
+        reason:!ownRoomValid?'selected-product-estimated-length-conflict':!roomValid?'related-model-toe-room-outside-reference-window':!widthValid?'width-outside-reference-scope':'reference-only-not-fit-verified',
+        selectedProductLengthEstimate:ownLength?{tipGapMm:ownLength.tipGapMm,usableGapMm:ownLength.usableGapMm,isMeasured:false}:null,
         nominalRelatedToeRoomMm:toeRoom,widthRiskMm:widthRisk,
         relatedModelEstimates:{isSelectedProductMeasurement:false,isMeasured:false,
           innerLengthMm:{nominal:estimatedLength,range:[Math.min(...lengths)-POLICY.relatedModelTransferUncertaintyMm,Math.max(...lengths)+POLICY.relatedModelTransferUncertaintyMm]},

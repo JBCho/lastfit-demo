@@ -173,7 +173,7 @@
     if(loose.length)return failure(size,'loose',loose.join('·')+' 부위가 헐겁습니다.',metrics,quality);
     // The Dior viewer applies shared-layer, seam and bending constraints after
     // the local equilibrium solve. A size may not pass here if those same
-    // constraints would turn its fitted surface into unresolved grey regions.
+    // constraints would turn its fitted surface into unresolved red regions.
     if(quality==='full'&&LF.diorFit&&LF.diorFit.enabled(model)) {
       if(!LF.glbFit||!LF.Engine)return failure(size,'unknown','갑피 변형을 확인하지 못했습니다.',metrics,quality);
       const display={foot:measured,shoe,wornLast:worn.shoe,ctx,sim};

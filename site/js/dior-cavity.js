@@ -1,4 +1,4 @@
-// A fixed Dior demo last, independent of the current visitor's measurements.
+// Fixed product-specific demo lasts, independent of the visitor's measurements.
 // The source asset is an exterior display model, not an interior scan. This
 // factory-last assumption is calibrated to the agreed 270 / 262mm demo fit.
 // It changes only the inferred cavity; source vertices and the support stay put.
@@ -8,6 +8,14 @@
   const referenceSurfaces=new WeakMap();
   const REFERENCE=Object.freeze({length:262,ballWidth:94,heelWidth:62,instepHeight:54,
     archHeight:.5,toeHeight:18,toeShape:'egyptian',bunion:0});
+  const HIGH_PROFILE='jordan-high-reference-last-v1';
+  // Both reference feet use the same nominal anchor, not the visitor's foot.
+  // Clearances and bounded exterior-shape blending are explicit demo priors,
+  // not manufacturer interior dimensions or claims about all AJ1 High SKUs.
+  const DEFINITIONS={
+    [PROFILE]:{clearance:{medial:1,lateral:1,dorsal:2,heel:.8},sourceShapeWeight:0},
+    [HIGH_PROFILE]:{clearance:{medial:.7,lateral:.9,dorsal:1.6,heel:.6},sourceShapeWeight:.2,maxSourceDeviationMm:2},
+  };
   const PREF=Object.freeze({usage:'daily',style:0,sock:'regular',lacing:.85,days:0,snugWear:true,
     swell:false,sens:Object.freeze({bunion:false,tailor:false,instep:false,heel:false})});
   const copy=v=>JSON.parse(JSON.stringify(v));
@@ -38,11 +46,11 @@
   }
   function apply(registration,catalog) {
     const cal=registration&&registration.calibration;
-    const active=cal&&cal.options&&cal.options.cavityProfile===PROFILE ||
-      catalog&&catalog.calibration&&catalog.calibration.cavityProfile===PROFILE;
-    if(!active || !registration.radialProfile || !LF.sim || !LF.contactDrape || !LF.product)return null;
+    const selected=cal&&cal.options&&cal.options.cavityProfile || catalog&&catalog.calibration&&catalog.calibration.cavityProfile;
+    const definition=DEFINITIONS[selected];
+    if(!definition || !registration.radialProfile || !LF.sim || !LF.contactDrape || !LF.product)return null;
     const source=registration.radialProfile;
-    if(source.referenceLast&&source.referenceLast.profile===PROFILE)return {profile:source,metadata:source.referenceLast};
+    if(source.referenceLast&&source.referenceLast.profile===selected)return {profile:source,metadata:source.referenceLast};
     const scale=Number(cal.usableGeometry&&cal.usableGeometry.targetLengthMm||274)/274;
     if(!(scale>.65&&scale<1.4))throw new RangeError('Dior reference-last grading is outside its estimated range.');
     const measurements={...REFERENCE};
@@ -106,15 +114,25 @@
         // corrected upper side and the fixed floor, creating false collisions.
         const hit=collider.query(x,y,z);
         const archWeight=hit&&hit.triangle.reduce((sum,k,i)=>sum+(foot.zone[k]===LF.geom.Z.ARCH?hit.barycentric[i]:0),0);
-        if(dy<-.02 && hit&&hit.normal.y<-.5&&archWeight>.5){retainedFloor++;continue;}
+        // The High's inset medial decorative wall crosses the anatomical arch.
+        // Only its measured support-floor is an immutable boundary; reconstruct
+        // the sidewall around the fixed last rather than preserving that notch.
+        if(selected===PROFILE && dy<-.02 && hit&&hit.normal.y<-.5&&archWeight>.5){retainedFloor++;continue;}
         const heel=1-smooth(.22,.34,row.t),dorsal=smooth(.1,.85,Math.max(0,dy));
-        const clearance=((1-dorsal)*1+dorsal*2)*(1-heel)+.8*heel;
+        const allowances=definition.clearance,sideAllowance=dz>=0?allowances.medial:allowances.lateral;
+        const clearance=((1-dorsal)*sideAllowance+dorsal*allowances.dorsal)*(1-heel)+allowances.heel*heel;
         const oldRadius=Math.hypot(sourcePoint[0]-row.centerY,sourcePoint[1]-row.centerZ);
         // Clearance is a normal distance. A 1mm radial offset next to an
         // oblique heel/ball face can leave only a fraction of that clearance.
         const incidence=hit?Math.abs(hit.normal.y*dy+hit.normal.z*dz):1;
         const samplingMargin=.1*scale;
         let target=refRadius+(clearance*scale+samplingMargin)/Math.max(.3,incidence);
+        // Keep a bounded amount of the High's own forefoot taper/asymmetry.
+        // Its tall tongue must not become dorsal free space or an ankle roof.
+        if(definition.sourceShapeWeight && row.t>.6) {
+          const residual=clamp(oldRadius-target,-definition.maxSourceDeviationMm*scale,definition.maxSourceDeviationMm*scale);
+          target+=residual*definition.sourceShapeWeight*smooth(.6,.73,row.t);
+        }
         if(dy<-.000001)target=Math.min(target,Math.max(0,(row.floorY-row.centerY)/dy));
         const radius=oldRadius+(target-oldRadius)*blend;
         row.ring[j]=[Math.max(row.floorY,row.centerY+dy*radius),row.centerZ+dz*radius];
@@ -124,19 +142,21 @@
         adjusted++;maxOutward=Math.max(maxOutward,radius-oldRadius);maxInward=Math.max(maxInward,oldRadius-radius);
       }
     }
-    const metadata={profile:PROFILE,source:'fixed-factory-last-demo-assumption',isMeasured:false,
+    const metadata={profile:selected,source:'fixed-factory-last-demo-assumption',isMeasured:false,
       referenceNominalSizeMm:270,referenceFootMm:{...REFERENCE},gradeScale:scale,
-      referencePose:{...ctx.seat},clearanceMm:{side:1,dorsal:2,heel:.8},samplingMarginMm:.1*scale,referenceToeAllowanceMm:toeAllowance,
+      referencePose:{...ctx.seat},clearanceMm:selected===PROFILE?{side:1,dorsal:2,heel:.8}:{...definition.clearance},
+      sourceShapeWeight:definition.sourceShapeWeight,maxSourceDeviationMm:definition.maxSourceDeviationMm||0,
+      samplingMarginMm:.1*scale,referenceToeAllowanceMm:toeAllowance,
       sourceExteriorUnchanged:true,supportUnchanged:true,independentOfUserInput:true,
       toeAllowanceSource:'source-GLB-and-Nike-chart-estimate',adjustedSamples:adjusted,
       maximumOutwardCorrectionMm:maxOutward,maximumInwardCorrectionMm:maxInward,
       retainedSupportSamples:retainedFloor,retainedOpeningSamples:retainedOpening};
-    profile.source=PROFILE;profile.internalSource='fixed-reference-last-not-an-interior-measurement';
+    profile.source=selected;profile.internalSource='fixed-reference-last-not-an-interior-measurement';
     profile.referenceLast=metadata;
     registration.radialProfile=profile;registration.productInput.radialProfile=profile;
     cal.cavityCorrection=metadata;cal.cavityReferenceLast=metadata;cal.internalSource=profile.internalSource;
     registration.productInput.glbCalibration=cal;
     return {profile,metadata};
   }
-  LF.diorCavity={PROFILE,REFERENCE,apply,referenceSurface:registration=>referenceSurfaces.get(registration)||null};
+  LF.diorCavity={PROFILE,HIGH_PROFILE,REFERENCE,apply,referenceSurface:registration=>referenceSurfaces.get(registration)||null};
 })((window.LF=window.LF||{}));

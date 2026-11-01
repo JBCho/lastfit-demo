@@ -1,12 +1,13 @@
-// Dior demonstration: an estimated leather shell bound to the measured cavity.
+// Product-specific estimated leather shells bound to their inferred cavities.
 // Panel boundaries and strain parameters are engineering assumptions,
 // not Dior material measurements. No source GLB topology or texture is changed.
 (function (LF) {
   'use strict';
   const PROFILE = 'dior-leather-v1', TAU = Math.PI * 2;
+  const HIGH_PROFILE = 'jordan-high-leather-v1';
   const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
   const smooth = (a, b, x) => { const t = clamp((x - a) / (b - a), 0, 1); return t * t * (3 - 2 * t); };
-  const enabled = model => Boolean(model && model.fitPhysicsProfile === PROFILE);
+  const enabled = model => Boolean(model && [PROFILE,HIGH_PROFILE].includes(model.fitPhysicsProfile));
   const topologyCache = new WeakMap();
 
   function shellDirection(shoe, x, y, z) {
@@ -30,14 +31,18 @@
     const t = clamp(x / length, 0, 1), section = LF.geom.lastSection(shape, clamp(x, .01, length - .01));
     const height = y - supportHeight(shoe, x, z), halfWidth = Math.max(1, section.a);
     const lateral = Math.abs(z - section.c) / halfWidth;
+    const high = shoe.model && shoe.model.fitPhysicsProfile === HIGH_PROFILE;
     // A sole attachment and a toe overlay seam are anatomical masks, not seams
     // detected from the textured GLB. A smooth transition avoids a hard crease.
     const fixedWeight = 1 - smooth(.8, 7, height);
     const toeOverlay = smooth(.91, .965, t);
     const perimeterOverlay = smooth(.69, .91, lateral) * (1 - smooth(10, 20, height));
     const vampSeam = (1 - smooth(.012, .038, Math.abs(t - .735))) * smooth(.35, .75, lateral);
-    const reinforcement = Math.max(toeOverlay, perimeterOverlay, vampSeam);
-    const counter = 1 - smooth(.16, .28, t);
+    // The High's rear quarter extends farther forward around its high collar.
+    // These are annotated masks, not measured material or padding thicknesses.
+    const highQuarter = high ? (1-smooth(.32,.48,t))*smooth(22,40,height)*smooth(.5,.85,lateral) : 0;
+    const reinforcement = Math.max(toeOverlay, perimeterOverlay, vampSeam, highQuarter);
+    const counter = 1 - smooth(high ? .20 : .16, high ? .32 : .28, t);
     const stiff = Math.max(reinforcement, counter * .85);
     const scale = (Number(shoe.S || shape.S) || length * 270 / 274) / 270;
     const maxOutwardMm = ((2.7 * (1 - stiff) + 1.3 * stiff) * (1 - counter) + .8 * counter) * scale * (1 - fixedWeight);
@@ -237,7 +242,7 @@
     }
     for (const edge of topologyInfo.edges) maxStrain = Math.max(maxStrain, edgeRatio(edge) - 1);
     for (const bend of topologyInfo.bends) maxBending = Math.max(maxBending, Math.abs(topologyInfo.angle(bend.a, bend.b, bend.c, positions) - bend.angle) / Math.max(.01, bend.length));
-    const shellStats = { source: 'dior-shared-obstacle-membrane', profile: PROFILE, estimatedPanels: true, expansionOnly: true,
+    const shellStats = { source: model.fitPhysicsProfile===HIGH_PROFILE?'high-shared-obstacle-membrane':'dior-shared-obstacle-membrane', profile: model.fitPhysicsProfile, estimatedPanels: true, expansionOnly: true,
       maxMm, maxElasticExpansionMm: maxMm, maxAllowedElasticExpansionMm: maxAllowed, maxPhysicalDisplacementMm: maxMm, maxInwardDisplacementMm: 0,
       maxTensileStrain: maxStrain, maxCurvatureChangePerMm: maxBending, constraintScale, constrainedProjectionCount: constrained,
       spreadVertexCount, contactVertexCount, contactSampleCount, initialPenetrationMm: Math.max(0, initialPenetrationMm),
@@ -286,11 +291,11 @@
       }
       const stats = { ...(field.shellStats || {}), maxMm, maxElasticExpansionMm: maxMm, maxPhysicalDisplacementMm: maxMm, collisionCorrectedVertexCount: deformed,
         remainingPenetrationMm: residual, remainingFlexiblePenetrationMm: flexibleResidual, remainingRigidPenetrationMm: rigidResidual, fixedVertexCount: rigidCount,
-        sharedLayerBinding: true, source: 'dior-shared-shell-layer-binding' };
+        sharedLayerBinding: true, source: field.shellStats.profile===HIGH_PROFILE?'high-shared-shell-layer-binding':'dior-shared-shell-layer-binding' };
       result.set(entry, { positions, mappedPositions: positions.slice(), stretchVectors, closeVectors, fixedMask, stats, reactionsKPa: null, visualVariants: new Map() });
     }
     return result;
   }
 
-  LF.diorFit = { PROFILE, enabled, panelAt, enhanceField, renderPositions, sampleShared };
+  LF.diorFit = { PROFILE, HIGH_PROFILE, enabled, panelAt, enhanceField, renderPositions, sampleShared };
 })((window.LF = window.LF || {}));

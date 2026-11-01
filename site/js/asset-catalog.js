@@ -386,6 +386,7 @@ window.LF.assetCatalog = [
           }
         ]
       },
+      "fitNote": "Dior 로우컷 · 가죽 패널과 봉제 경계 반영",
       "upper": "leather",
       "physicsProfile": "dior-leather-v1",
       "evidenceProfile": "jordan-family-research-v1",
@@ -495,6 +496,13 @@ window.LF.assetCatalog = [
           }
         ],
         "sources": [
+          {
+            "id": "nike-aj1-high-family-construction",
+            "url": "https://www.nike.com/t/air-jordan-1-high-og-royal-mens-shoes-p8vLeLAd/IQ5495-005",
+            "retrievedAt": "2026-11-01",
+            "type": "manufacturer-related-family-construction",
+            "scope": "High OG Royal IQ5495-005: leather upper, high collar, rubber outsole. Not the authenticated SKU of the GLB; no measured interior, padding thickness, elastic constants or stretch budget."
+          },
           {
             "id": "nike-kr-men",
             "url": "https://www.nike.com/kr/size-fit/mens-footwear",
@@ -882,6 +890,7 @@ window.LF.assetCatalog = [
       "unit": "m",
       "wallThickness": 3,
       "soleThickness": 7,
+      "cavityProfile": "jordan-high-reference-last-v1",
       "meshIndices": [
         24,
         25,
@@ -916,6 +925,11 @@ window.LF.assetCatalog = [
       ]
     },
     "fit": {
+      "fitNote": "High 하이컷 · 뒤꿈치 보강과 곡면 바닥·앞코 형상 반영",
+      "upper": "leather",
+      "counter": "counter_medium",
+      "physicsProfile": "jordan-high-leather-v1",
+      "materialSourceUrl": "https://www.nike.com/t/air-jordan-1-high-og-royal-mens-shoes-p8vLeLAd/IQ5495-005",
       "evidenceProfile": "jordan-family-research-v1",
       "sizeChart": {
         "version": 1,
@@ -1317,7 +1331,10 @@ window.LF.assetCatalog = [
             "runrepeat-aj1-mid-us9"
           ],
           "exteriorCrossCheckIds": [],
-          "materialSourceIds": []
+          "materialSourceIds": [
+            "nike-aj1-high-family-construction"
+          ],
+          "constructionAssumption": "Leather upper and high collar are family-level manufacturer evidence, not authentication of this display mesh or measured mechanical properties. Demo panel masks and padding clearances are explicit estimates."
         },
         "relatedMeasurements": [
           {
@@ -1384,6 +1401,13 @@ window.LF.assetCatalog = [
           }
         ],
         "sources": [
+          {
+            "id": "nike-aj1-high-family-construction",
+            "url": "https://www.nike.com/t/air-jordan-1-high-og-royal-mens-shoes-p8vLeLAd/IQ5495-005",
+            "retrievedAt": "2026-11-01",
+            "type": "manufacturer-related-family-construction",
+            "scope": "High OG Royal IQ5495-005: leather upper, high collar, rubber outsole. Not the authenticated SKU of the GLB; no measured interior, padding thickness, elastic constants or stretch budget."
+          },
           {
             "id": "nike-kr-men",
             "url": "https://www.nike.com/kr/size-fit/mens-footwear",
